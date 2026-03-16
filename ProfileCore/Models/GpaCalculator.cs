@@ -4,8 +4,12 @@ namespace ProfileCore.Models;
 /// Represents the incoming payload from the client containing the data needed to calculate a GPA.
 /// </summary>
 /// <param name="Courses">A list of academic courses to be used in the calculation.</param>
+/// <param name="CurrentGpa">The user's current GPA number</param>
+/// <param name="PastCreditHours">The number of credit hours the user has taken in the past.</param>
 public record GpaCalculationRequest(
-    List<Course> Courses
+    List<Course> Courses,
+    double? CurrentGpa,
+    double? PastCreditHours
 );
 
 /// <summary>
