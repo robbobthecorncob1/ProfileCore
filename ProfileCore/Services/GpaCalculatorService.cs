@@ -9,7 +9,7 @@ public class GpaCalculatorService : IGpaCalculatorService
     public GpaCalculationResponse CalculateGpa(GpaCalculationRequest request)
     {
         double CalculatedGpa = 0;
-        string Message = "Please add at least one course.";
+        string Message = "Please add at least one course with more than 0 credit hours.";
 
         if (request.Courses.Count > 0)
         {
@@ -24,14 +24,22 @@ public class GpaCalculatorService : IGpaCalculatorService
 
             if (totalCreditHours > 0)
             {
+                if (request.CurrentGpa.HasValue && request.PastCreditHours.HasValue)
+                {
+                    totalGradePoints += request.CurrentGpa.Value * request.PastCreditHours.Value;
+                    totalCreditHours += request.PastCreditHours.Value;
+                }
+
                 CalculatedGpa = Math.Round(totalGradePoints / totalCreditHours, 2);
+                
                 Message = "GPA successfully calculated!";
             }
-            else
+            else if (request.CurrentGpa.HasValue)
             {
-                Message = "Total credit hours cannot be 0. Please enter credit hours.";
+                CalculatedGpa = request.CurrentGpa.Value;
             }
-        }
+        } 
+        
         return  new GpaCalculationResponse(CalculatedGpa, Message);
     }
 
