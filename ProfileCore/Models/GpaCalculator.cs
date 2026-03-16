@@ -11,11 +11,11 @@ public record GpaCalculationRequest(
 /// <summary>
 /// Represents an academic course and its grading information.
 /// </summary>
-/// <param name="ClassName">The name or identifier of the course.</param>
+/// <param name="CourseName">The name or identifier of the course.</param>
 /// <param name="CreditHours">The number of credit hours or units the course is worth.</param>
 /// <param name="Grade">The letter grade achieved in the course.</param>
 public record Course(
-    string ClassName,
+    string CourseName,
     double CreditHours, 
     string Grade
 );
