@@ -1,0 +1,13 @@
+.vscode/
+.vs/
+*.user
+.DS_Store
+Thumbs.db
+
+[Bb]in/
+[Oo]bj/
+
+TestResults/
+
+appsettings.Development.json
+*.secret.json

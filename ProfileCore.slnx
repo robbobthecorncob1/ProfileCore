@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="ProfileCore.Tests/ProfileCore.Tests.csproj" />
+  <Project Path="ProfileCore/ProfileCore.csproj" />
+</Solution>
