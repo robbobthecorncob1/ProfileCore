@@ -30,4 +30,19 @@ public class GpaController(IGpaCalculatorService gpaService) : ControllerBase
 
         return Ok(response);
     }
+
+    /// <summary>
+    /// Calculates the required GPA for a future block of credits to achieve a specific target GPA.
+    /// </summary>
+    /// <param name="request">The payload containing current GPA, past credits, target GPA, and future credits.</param>
+    /// <returns>An HTTP response containing the required GPA and a status message.</returns>
+    /// <response code="200">Returns the successfully calculated target GPA result.</response>
+    /// <response code="400">If the incoming JSON request is malformed.</response>
+    [HttpPost("calculate-target")]
+    public ActionResult<TargetGpaResponse> CalculateTargetGpa([FromBody] TargetGpaRequest request)
+    {
+        TargetGpaResponse response = _gpaService.CalculateTargetGpa(request);
+
+        return Ok(response);
+    }
 }
