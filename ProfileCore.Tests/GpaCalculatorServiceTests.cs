@@ -160,4 +160,81 @@ public class GpaCalculatorServiceTests
 
         Assert.Equal(3.99, result.CalculatedGpa);
     }
+
+    [Fact]
+    public void CalculateTargetGpa_ZeroNewCreditHours_ReturnsError()
+    {
+        var request = new TargetGpaRequest(3.0, 60.0, 3.5, 0.0);
+
+        var result = _sut.CalculateTargetGpa(request);
+
+        Assert.Equal(-1, result.RequiredGpa);
+        Assert.Equal("Need at least one credit hour", result.Message);
+    }
+
+    [Fact]
+    public void CalculateTargetGpa_RequiredGpaGreaterThanFour_ReturnsImpossibleMessage()
+    {
+        var request = new TargetGpaRequest(2.0, 60.0, 3.5, 15.0);
+
+        var result = _sut.CalculateTargetGpa(request);
+
+        Assert.Equal(9.5, result.RequiredGpa);
+        Assert.Equal("You will need a minimum 9.5 GPA in your 15 credit hours.\nTry adding more classes!", result.Message);
+    }
+
+    [Fact]
+    public void CalculateTargetGpa_RequiredGpaIsThreePointFive_ReturnsHardMessage()
+    {
+        var request = new TargetGpaRequest(3.0, 60.0, 3.1, 15.0);
+
+        var result = _sut.CalculateTargetGpa(request);
+
+        Assert.Equal(3.5, result.RequiredGpa);
+        Assert.Equal("You will need a minimum 3.5 GPA in your 15 credit hours.\nYou will need mostly A's to pull this off.", result.Message);
+    }
+
+    [Fact]
+    public void CalculateTargetGpa_RequiredGpaIsThree_ReturnsModerateMessage()
+    {
+        var request = new TargetGpaRequest(3.0, 60.0, 3.0, 15.0);
+
+        var result = _sut.CalculateTargetGpa(request);
+
+        Assert.Equal(3.0, result.RequiredGpa);
+        Assert.Equal("You will need a minimum 3 GPA in your 15 credit hours.\nYou will need a solid mix of A's, B's, and maybe some C's.", result.Message);
+    }
+
+    [Fact]
+    public void CalculateTargetGpa_RequiredGpaIsOne_ReturnsEasyMessage()
+    {
+        var request = new TargetGpaRequest(3.5, 60.0, 3.0, 15.0);
+
+        var result = _sut.CalculateTargetGpa(request);
+
+        Assert.Equal(1.0, result.RequiredGpa);
+        Assert.Equal("You will need a minimum 1 GPA in your 15 credit hours.\nYou have plenty of breathing room to hit this target.", result.Message);
+    }
+
+    [Fact]
+    public void CalculateTargetGpa_RequiredGpaIsNegative_ReturnsEasyMessage()
+    {
+        var request = new TargetGpaRequest(4.0, 60.0, 2.0, 15.0);
+
+        var result = _sut.CalculateTargetGpa(request);
+
+        Assert.Equal(-6.0, result.RequiredGpa);
+        Assert.Equal("You will need a minimum -6 GPA in your 15 credit hours.\nYou have plenty of breathing room to hit this target.", result.Message);
+    }
+
+    [Fact]
+    public void CalculateTargetGpa_WithDecimals_RoundsToTwoPlaces()
+    {
+        var request = new TargetGpaRequest(3.25, 45.0, 3.4, 16.0);
+
+        var result = _sut.CalculateTargetGpa(request);
+
+        Assert.Equal(3.82, result.RequiredGpa);
+        Assert.Equal("You will need a minimum 3.82 GPA in your 16 credit hours.\nYou will need mostly A's to pull this off.", result.Message);
+    }
 }
