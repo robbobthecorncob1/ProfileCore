@@ -43,6 +43,30 @@ public class GpaCalculatorService : IGpaCalculatorService
         return  new GpaCalculationResponse(CalculatedGpa, Message);
     }
 
+    /// <inheritdoc />
+    public TargetGpaResponse CalculateTargetGpa(TargetGpaRequest request)
+    {
+        double requiredGpa = -1;
+        string message = "Need at least one credit hour";
+        if (request.NewCreditHours > 0)
+        {
+            requiredGpa = (request.TargetGpa * (request.PastCreditHours + request.NewCreditHours) - request.CurrentGpa * request.PastCreditHours) / request.NewCreditHours;
+            requiredGpa = Math.Round(requiredGpa, 2);
+            
+            message = $"You will need a minimum {requiredGpa} GPA in your {request.NewCreditHours} credit hours.\n";
+            message += requiredGpa switch
+            {
+                > 4.0 => "Try adding more classes!",
+                >= 3.5 => "You will need mostly A's to pull this off.",
+                >= 2.0 => "You will need a solid mix of A's, B's, and maybe some C's.",
+                _ => "You have plenty of breathing room to hit this target."
+            };
+
+        }
+        
+        return new TargetGpaResponse(requiredGpa, message);
+    }
+
     /// <summary>
     /// Converts a alphabetical letter grade into its corresponding numerical point value.
     /// </summary>
@@ -66,4 +90,5 @@ public class GpaCalculatorService : IGpaCalculatorService
             _ => 0.0
         };        
     }
+
  }
