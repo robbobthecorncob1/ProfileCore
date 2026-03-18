@@ -23,7 +23,7 @@ public class GpaControllerTests
     {
         var request = new GpaCalculationRequest([], null, null);
         
-        var expectedResponse = new GpaCalculationResponse(3.8, "Mocked success!");
+        var expectedResponse = new GpaCalculationResponse(3.8, "Mocked success!", 0);
         _mockGpaService.Setup(service => service.CalculateGpa(request)).Returns(expectedResponse);
 
         var result = _sut.CalculateGpa(request);
@@ -39,7 +39,7 @@ public class GpaControllerTests
     public void CalculateGpa_ServiceReturnsWarning_ReturnsOkObjectResultWithWarning()
     {
         var request = new GpaCalculationRequest([], null, null);
-        var expectedResponse = new GpaCalculationResponse(0, "Please add at least one course with more than 0 credit hours.");
+        var expectedResponse = new GpaCalculationResponse(0, "Please add at least one course with more than 0 credit hours.", 0);
         
         _mockGpaService
             .Setup(service => service.CalculateGpa(request))
@@ -57,7 +57,7 @@ public class GpaControllerTests
     public void CalculateGpa_Always_CallsServiceExactlyOnce()
     {
         var request = new GpaCalculationRequest([new Course("Math", 3.0, "A")], null, null);
-        var expectedResponse = new GpaCalculationResponse(4.0, "GPA successfully calculated!");
+        var expectedResponse = new GpaCalculationResponse(4.0, "GPA successfully calculated!", 3);
         
         _mockGpaService
             .Setup(service => service.CalculateGpa(It.IsAny<GpaCalculationRequest>()))

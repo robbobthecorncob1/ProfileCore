@@ -9,28 +9,29 @@ public class GpaCalculatorService : IGpaCalculatorService
     public GpaCalculationResponse CalculateGpa(GpaCalculationRequest request)
     {
         double CalculatedGpa = 0;
+        double TotalCreditHours = 0;
         string Message = "Please add at least one course with more than 0 credit hours.";
 
         if (request.Courses.Count > 0)
         {
             double totalGradePoints = 0;
-            double totalCreditHours = 0;
+            TotalCreditHours = 0;
 
             foreach (var course in request.Courses)
             {
                 totalGradePoints += ConvertGradeToPoints(course.Grade) * course.CreditHours;
-                totalCreditHours += course.CreditHours;
+                TotalCreditHours += course.CreditHours;
             }
 
-            if (totalCreditHours > 0)
+            if (TotalCreditHours > 0)
             {
                 if (request.CurrentGpa.HasValue && request.PastCreditHours.HasValue)
                 {
                     totalGradePoints += request.CurrentGpa.Value * request.PastCreditHours.Value;
-                    totalCreditHours += request.PastCreditHours.Value;
+                    TotalCreditHours += request.PastCreditHours.Value;
                 }
 
-                CalculatedGpa = Math.Round(totalGradePoints / totalCreditHours, 2);
+                CalculatedGpa = Math.Round(totalGradePoints / TotalCreditHours, 2);
                 
                 Message = "GPA successfully calculated!";
             }
@@ -39,8 +40,15 @@ public class GpaCalculatorService : IGpaCalculatorService
                 CalculatedGpa = request.CurrentGpa.Value;
             }
         } 
+        else if (request.CurrentGpa.HasValue)
+        {
+            CalculatedGpa = request.CurrentGpa.Value;
+            if (request.PastCreditHours.HasValue){
+                TotalCreditHours = request.PastCreditHours.Value;
+            }
+        }
         
-        return  new GpaCalculationResponse(CalculatedGpa, Message);
+        return  new GpaCalculationResponse(CalculatedGpa, Message, TotalCreditHours);
     }
 
     /// <inheritdoc />

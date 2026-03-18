@@ -29,9 +29,11 @@ public record Course(
 /// </summary>
 /// <param name="CalculatedGpa">The computed Grade Point Average.</param>
 /// <param name="Message">A message containing information about the calculation.</param>
+/// <param name="TotalCreditHours">The total amount of credit hours.</param>
 public record GpaCalculationResponse(
     double CalculatedGpa,
-    string Message
+    string Message,
+    double TotalCreditHours
 );
 
 /// <summary>
