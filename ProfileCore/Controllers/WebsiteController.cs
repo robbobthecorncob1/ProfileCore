@@ -80,6 +80,8 @@ public class WebsiteController(IWebsiteService websiteService) : ControllerBase
     [HttpPost("contact")]
     public async Task<IActionResult> SubmitContactForm([FromBody] ContactSubmission submission)
     {
+        // ENABLE FOR TESTING: 
+        // if (!ModelState.IsValid) return BadRequest(ModelState);
         await _websiteService.ProcessContactSubmissionAsync(submission);
         return Ok(new { message = "Message received successfully. I'll be in touch!" });
     }
