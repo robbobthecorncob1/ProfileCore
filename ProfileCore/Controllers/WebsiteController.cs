@@ -21,9 +21,9 @@ public class WebsiteController(IWebsiteService websiteService) : ControllerBase
     /// <returns>The complete profile record.</returns>
     /// <response code="200">Returns the requested profile data.</response>
     [HttpGet("profile")]
-    public ActionResult<Profile> GetProfile()
+    public async Task<ActionResult<Profile>> GetProfile()
     {
-        return Ok(_websiteService.GetProfile());
+        return Ok(await _websiteService.GetProfileAsync());
     }
 
     /// <summary>
@@ -32,9 +32,9 @@ public class WebsiteController(IWebsiteService websiteService) : ControllerBase
     /// <returns>A wrapper object containing a list of past and present jobs.</returns>
     /// <response code="200">Returns the requested work experience data.</response>
     [HttpGet("experience")]
-    public ActionResult<WorkExperience> GetExperience()
+    public async Task <ActionResult<WorkExperience>> GetExperience()
     {
-        return Ok(_websiteService.GetWorkExperience());
+        return Ok(await _websiteService.GetWorkExperienceAsync());
     }
 
     /// <summary>
@@ -43,9 +43,9 @@ public class WebsiteController(IWebsiteService websiteService) : ControllerBase
     /// <returns>A wrapper object containing a list of projects.</returns>
     /// <response code="200">Returns the requested project data.</response>
     [HttpGet("projects")]
-    public ActionResult<ProjectExperience> GetProjects()
+    public async Task<ActionResult<ProjectExperience>> GetProjects()
     {
-        return Ok(_websiteService.GetProjectExperience());
+        return Ok(await _websiteService.GetProjectExperienceAsync());
     }
 
     /// <summary>
@@ -54,9 +54,9 @@ public class WebsiteController(IWebsiteService websiteService) : ControllerBase
     /// <returns>A wrapper object containing a list of educational programs.</returns>
     /// <response code="200">Returns the requested education data.</response>
     [HttpGet("education")]
-    public ActionResult<EducationList> GetEducation()
+    public async Task<ActionResult<EducationList>> GetEducation()
     {
-        return Ok(_websiteService.GetEducation());
+        return Ok(await _websiteService.GetEducationAsync());
     }
 
     /// <summary>
@@ -65,9 +65,9 @@ public class WebsiteController(IWebsiteService websiteService) : ControllerBase
     /// <returns>A system status record.</returns>
     /// <response code="200">Returns the current system health metrics.</response>
     [HttpGet("status")]
-    public ActionResult<SystemStatus> GetSystemStatus()
+    public async Task<ActionResult<SystemStatus>> GetSystemStatus()
     {
-        return Ok(_websiteService.GetSystemStatus());
+        return Ok(await _websiteService.GetSystemStatusAsync());
     }
 
     /// <summary>
@@ -78,9 +78,9 @@ public class WebsiteController(IWebsiteService websiteService) : ControllerBase
     /// <response code="200">The message was successfully processed.</response>
     /// <response code="400">The submitted payload failed validation (e.g. missing fields or fields exceeding maximum length).</response>
     [HttpPost("contact")]
-    public IActionResult SubmitContactForm([FromBody] ContactSubmission submission)
+    public async Task<IActionResult> SubmitContactForm([FromBody] ContactSubmission submission)
     {
-        _websiteService.ProcessContactSubmission(submission);
+        await _websiteService.ProcessContactSubmissionAsync(submission);
         return Ok(new { message = "Message received successfully. I'll be in touch!" });
     }
 }
