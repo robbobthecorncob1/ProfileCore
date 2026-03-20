@@ -5,7 +5,7 @@ using ProfileCore.Services;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddCors(options => {
-    options.AddPolicy("AllowReactApp", policy => policy.WithOrigins("http://localhost:5173").AllowAnyMethod().AllowAnyHeader());
+    options.AddPolicy("AllowDevEnvironments", policy => policy.WithOrigins(builder.Configuration.GetSection("AllowedOrigins").Get<string[]>()!).AllowAnyMethod().AllowAnyHeader());
 });
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
@@ -21,7 +21,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseCors("AllowReactApp");
+app.UseCors("AllowDevEnvironments");
 
 app.UseAuthorization();
 
