@@ -91,7 +91,7 @@ public record Job (
     string DateStarted,
 
     [property: MaxLength(100)]
-    string DateEnded,
+    string? DateEnded,
 
     [property: Required, MaxLength(20000)]
     string Description
