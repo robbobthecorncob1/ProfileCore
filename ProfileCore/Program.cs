@@ -10,6 +10,7 @@ builder.Services.AddCors(options => {
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 builder.Services.AddScoped<IGpaCalculatorService, GpaCalculatorService>();
+builder.Services.AddScoped<IWebsiteService, WebsiteService>();
 builder.Services.AddDbContext<WebsiteDbContext>(options => options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
     
 var app = builder.Build();
