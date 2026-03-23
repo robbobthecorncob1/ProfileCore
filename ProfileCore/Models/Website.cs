@@ -56,14 +56,6 @@ public record SocialLink (
 );
 
 /// <summary>
-/// A wrapper record representing the complete employment history.
-/// </summary>
-/// <param name="Jobs">The list of individual job records.</param>
-public record WorkExperience (
-    List<Job> Jobs
-);
-
-/// <summary>
 /// Represents a single employment position or role.
 /// </summary>
 /// <param name="Id">The unique database identifier for the job.</param>
@@ -95,14 +87,6 @@ public record Job (
 
     [property: Required, MaxLength(20000)]
     string Description
-);
-
-/// <summary>
-/// A wrapper record representing a portfolio of completed or ongoing projects.
-/// </summary>
-/// <param name="Projects">The list of individual project records.</param>
-public record ProjectExperience (
-    List<Project> Projects
 );
 
 /// <summary>
@@ -140,12 +124,15 @@ public record Project (
 );
 
 /// <summary>
-/// A wrapper record representing the complete academic history.
+/// Represents a single skill. Has variables holding all jobs and projects where the skill is used.
 /// </summary>
-/// <param name="EducationProgram">The list of individual educational programs.</param>
-public record EducationList (
-    List<EducationProgram> EducationProgram
-);
+/// <param name="name">The name of the skill or technology</param>
+public class Skill(string name)
+{
+    public string SkillName {get; set;} = name;
+    public List<Job> JobsSkillUsed {get; set;} = [];
+    public List<Project> ProjectsSkillUsed {get; set;} = [];
+}
 
 /// <summary>
 /// Represents an academic degree, certification, or program of study.

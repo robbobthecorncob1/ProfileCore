@@ -17,25 +17,31 @@ public interface IWebsiteService
     /// <summary>
     /// Asynchronously Retrieves the user's complete employment history.
     /// </summary>
-    /// <returns>A task representing the asynchronous operation. The task result contains the  <see cref="WorkExperience"/> record.</returns>
-     Task<WorkExperience> GetWorkExperienceAsync();
+    /// <returns>A task representing the asynchronous operation. The task result contains a list of <see cref="Job"/> records.</returns>
+     Task<List<Job>> GetWorkExperienceAsync();
     
     /// <summary>
     /// Asynchronously Retrieves the user's portfolio of developed software projects and repositories.
     /// </summary>
-    /// <returns>A task representing the asynchronous operation. The task result contains the  <see cref="ProjectExperience"/> record.</returns>
-     Task<ProjectExperience> GetProjectExperienceAsync();
+    /// <returns>A task representing the asynchronous operation. The task result contains a list of <see cref="Project"/> records.</returns>
+     Task<List<Project>> GetProjectsAsync();
+
+    /// <summary>
+    /// Asynchronously Retrieves the user's complete list of skills.
+    /// </summary>
+    /// <returns>A task representing the asynchronous operation. The task result contains a list of <see cref="Skill"/> records.</returns>
+     Task<List<Skill>> GetSkillsAsync();
     
     /// <summary>
     /// Asynchronously Retrieves the user's academic history, degrees, and certifications.
     /// </summary>
-    /// <returns>A task representing the asynchronous operation. The task result contains the  <see cref="EducationList"/> record.</returns>
-     Task<EducationList> GetEducationAsync();
+    /// <returns>A task representing the asynchronous operation. The task result contains a list of <see cref="EducationProgram"/> records.</returns>
+     Task<List<EducationProgram>> GetEducationAsync();
     
     /// <summary>
     /// Asynchronously Retrieves the current operational health, environment, and version metrics of the application.
     /// </summary>
-    /// <returns>A task representing the asynchronous operation. The task result contains the  <see cref="SystemStatus"/> record.</returns>
+    /// <returns>A task representing the asynchronous operation. The task result contains the <see cref="SystemStatus"/> record.</returns>
      Task<SystemStatus> GetSystemStatusAsync();
     
     /// <summary>
