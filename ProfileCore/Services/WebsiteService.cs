@@ -20,21 +20,60 @@ public class WebsiteService(WebsiteDbContext context, ILogger<WebsiteService> lo
     }
     
     /// <inheritdoc />
-    public async Task<WorkExperience> GetWorkExperienceAsync()
+    public async Task<List<Job>> GetWorkExperienceAsync()
     {
-        return new WorkExperience(await _context.Jobs.ToListAsync());
+        return await _context.Jobs.ToListAsync();
     }
     
     /// <inheritdoc />
-    public async Task<ProjectExperience> GetProjectExperienceAsync()
+    public async Task<List<Project>> GetProjectsAsync()
     {
-        return new ProjectExperience(await _context.Projects.ToListAsync());
+        return await _context.Projects.ToListAsync();
     }
     
     /// <inheritdoc />
-    public async Task<EducationList> GetEducationAsync()
+    public async Task<List<Skill>> GetSkillsAsync()
+{
+    var jobs = await GetWorkExperienceAsync();
+    var projects = await GetProjectsAsync();
+
+    var skillDictionary = new Dictionary<string, Skill>(StringComparer.OrdinalIgnoreCase);
+
+    foreach (var project in projects)
     {
-        return new EducationList(await _context.Education.ToListAsync());
+        if (project.Technologies != null)
+        {
+            foreach (var skillName in project.Technologies)
+            {
+                if (!skillDictionary.ContainsKey(skillName)) skillDictionary[skillName] = new Skill(skillName);
+
+                skillDictionary[skillName].ProjectsSkillUsed.Add(project);
+            }
+        }
+    }
+
+    foreach (var job in jobs)
+    {
+        if (job.Technologies != null)
+        {
+            foreach (var skillName in job.Technologies)
+            {
+                if (skillName.Length > 0) {
+                    if (!skillDictionary.ContainsKey(skillName)) skillDictionary[skillName] = new Skill(skillName);
+
+                    skillDictionary[skillName].JobsSkillUsed.Add(job);
+                }
+            }
+        }
+    }
+
+    return [.. skillDictionary.Values];
+}
+
+    /// <inheritdoc />
+    public async Task<List<EducationProgram>> GetEducationAsync()
+    {
+        return await _context.Education.ToListAsync();
     }
     
     /// <inheritdoc />
@@ -43,10 +82,10 @@ public class WebsiteService(WebsiteDbContext context, ILogger<WebsiteService> lo
         return await Task.FromResult(
             new SystemStatus(
                 Environment: Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Production",
-                Version: "1.0.0",
+                Version: "0.8.1",
                 ServerTime: DateTime.UtcNow,
                 UptimeMilliseconds: (long)(DateTime.UtcNow - _serverStartTime).TotalMilliseconds,
-                StatusMessage: "API and Database are online and healthy."
+                StatusMessage: "Operational"
             )
         );
     }
