@@ -1,3 +1,4 @@
+using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
 using ProfileCore.Models;
 
@@ -29,4 +30,17 @@ public class WebsiteDbContext(DbContextOptions<WebsiteDbContext> options) : DbCo
     /// Gets or sets the database table containing the user's academic history, degrees, and certifications.
     /// </summary>
     public DbSet<EducationProgram> Education { get; set; }
+
+    /// <summary>
+    /// Configures the database schema and entity mappings for the application.
+    /// </summary>
+    /// <param name="modelBuilder">The builder being used to construct the model for this context.</param>
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
+        modelBuilder.Entity<Job>().Property(job => job.Technologies).HasConversion(
+            list => JsonSerializer.Serialize(list, (JsonSerializerOptions?)null),
+            jsonString => JsonSerializer.Deserialize<List<string>>(jsonString, (JsonSerializerOptions?)null) ?? new List<string>()
+        );
+    }
 }
