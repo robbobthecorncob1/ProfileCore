@@ -1,3 +1,5 @@
+using System.Diagnostics;
+using System.Reflection;
 using Microsoft.EntityFrameworkCore;
 using ProfileCore.Data;
 using ProfileCore.Models;
@@ -7,10 +9,12 @@ namespace ProfileCore.Services;
 /// <inheritdoc />
 /// <param name="context">The database context for website data.</param>
 /// <param name="logger">The logger for service-level events.</param>
-public class WebsiteService(WebsiteDbContext context, ILogger<WebsiteService> logger) : IWebsiteService
+public class WebsiteService(WebsiteDbContext context, ILogger<WebsiteService> logger, IHostEnvironment env, WebsiteDbContext dbContext) : IWebsiteService
 {
     private readonly WebsiteDbContext _context = context;
     private readonly ILogger<WebsiteService> _logger = logger;
+    private readonly IHostEnvironment _env = env;
+    private readonly WebsiteDbContext _dbContext = dbContext;
     private static readonly DateTime _serverStartTime = DateTime.UtcNow;
     
     /// <inheritdoc />
@@ -79,13 +83,26 @@ public class WebsiteService(WebsiteDbContext context, ILogger<WebsiteService> lo
     /// <inheritdoc />
     public async Task<SystemStatus> GetSystemStatusAsync()
     {
+        string dbStatus = "Offline";
+        try 
+        {
+            bool isDbOnline = await _dbContext.Database.CanConnectAsync();
+            if (isDbOnline) dbStatus = "Operational";
+        }
+        catch (Exception ex)
+        {
+            dbStatus = "Offline"; 
+            Console.WriteLine($"DB Health Check Failed: {ex.Message}");
+        }
+        
         return await Task.FromResult(
             new SystemStatus(
-                Environment: Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Production",
-                Version: "0.8.1",
+                Environment: _env.EnvironmentName,
+                Version: Assembly.GetEntryAssembly()?.GetName().Version?.ToString() ?? "Unknown",
                 ServerTime: DateTime.UtcNow,
-                UptimeMilliseconds: (long)(DateTime.UtcNow - _serverStartTime).TotalMilliseconds,
-                StatusMessage: "Operational"
+                UptimeMilliseconds: (long)(DateTime.UtcNow - Process.GetCurrentProcess().StartTime.ToUniversalTime()).TotalMilliseconds,
+                ApiStatus: "Operational",
+                DatabaseStatus: dbStatus
             )
         );
     }
