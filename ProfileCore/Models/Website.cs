@@ -185,7 +185,6 @@ public record EducationProgram (
 /// <param name="Email">The sender's return email address.</param>
 /// <param name="Subject">The topic of the message.</param>
 /// <param name="Message">The body of the message.</param>
-/// <param name="SubmittedAt">The exact date and time the message was received by the server.</param>
 public record ContactSubmission (
     [MaxLength(100)] string Name,
     [MaxLength(100)] string Email,
