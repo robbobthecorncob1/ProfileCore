@@ -81,19 +81,4 @@ public class WebsiteController(IWebsiteService websiteService) : ControllerBase
         return Ok(await _websiteService.GetSystemStatusAsync());
     }
 
-    /// <summary>
-    /// Processes a new contact form submission from a site visitor.
-    /// </summary>
-    /// <param name="submission">The payload containing the sender's name, email, subject, and message.</param>
-    /// <returns>A success message indicating the payload was received.</returns>
-    /// <response code="200">The message was successfully processed.</response>
-    /// <response code="400">The submitted payload failed validation (e.g. missing fields or fields exceeding maximum length).</response>
-    [HttpPost("contact")]
-    public async Task<IActionResult> SubmitContactForm([FromBody] ContactSubmission submission)
-    {
-        // ENABLE FOR TESTING: 
-        // if (!ModelState.IsValid) return BadRequest(ModelState);
-        await _websiteService.ProcessContactSubmissionAsync(submission);
-        return Ok(new { message = "Message received successfully. I'll be in touch!" });
-    }
 }
