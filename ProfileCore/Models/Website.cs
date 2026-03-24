@@ -187,19 +187,10 @@ public record EducationProgram (
 /// <param name="Message">The body of the message.</param>
 /// <param name="SubmittedAt">The exact date and time the message was received by the server.</param>
 public record ContactSubmission (
-    [property: MaxLength(100)]
-    string Name,
-
-    [property: MaxLength(100)]
-    string Email,
-
-    [property: MaxLength(100)]
-    string Subject,
-
-    [property: MaxLength(10000)]
-    string Message,
-    
-    DateTime SubmittedAt
+    [MaxLength(100)] string Name,
+    [MaxLength(100)] string Email,
+    [MaxLength(100)] string Subject,
+    [MaxLength(10000)] string Message
 );
 
 /// <summary>
@@ -215,5 +206,6 @@ public record SystemStatus (
     string Version,
     DateTime ServerTime,
     long UptimeMilliseconds,
-    string StatusMessage
+    string ApiStatus,
+    string DatabaseStatus
 );
