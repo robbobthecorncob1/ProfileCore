@@ -12,3 +12,4 @@ TestResults/
 appsettings.json
 appsettings.Development.json
 *.secret.json
+ProfileCore/appsettings.json
