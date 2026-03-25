@@ -9,5 +9,6 @@ Thumbs.db
 
 TestResults/
 
+appsettings.json
 appsettings.Development.json
 *.secret.json
