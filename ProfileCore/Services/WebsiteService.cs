@@ -40,6 +40,7 @@ public class WebsiteService(WebsiteDbContext context, ILogger<WebsiteService> lo
 {
     var jobs = await GetWorkExperienceAsync();
     var projects = await GetProjectsAsync();
+    var courses = await GetCoursesAsync();
 
     var skillDictionary = new Dictionary<string, Skill>(StringComparer.OrdinalIgnoreCase);
 
@@ -66,6 +67,21 @@ public class WebsiteService(WebsiteDbContext context, ILogger<WebsiteService> lo
                     if (!skillDictionary.ContainsKey(skillName)) skillDictionary[skillName] = new Skill(skillName);
 
                     skillDictionary[skillName].JobsSkillUsed.Add(job);
+                }
+            }
+        }
+    }
+
+    foreach (var course in courses)
+    {
+        if (course.Technologies != null)
+        {
+            foreach (var skillName in course.Technologies)
+            {
+                if (skillName.Length > 0) {
+                    if (!skillDictionary.ContainsKey(skillName)) skillDictionary[skillName] = new Skill(skillName);
+
+                    skillDictionary[skillName].CoursesSkillUsed.Add(course);
                 }
             }
         }
