@@ -1,4 +1,4 @@
-using ProfileCore.Models;
+using ProfileCore.Models.website;
 using ProfileCore.Services;
 
 namespace ProfileCore.Endpoints;

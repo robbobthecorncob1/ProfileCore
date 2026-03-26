@@ -16,7 +16,33 @@ namespace ProfileCore.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "10.0.5");
 
-            modelBuilder.Entity("ProfileCore.Models.EducationProgram", b =>
+            modelBuilder.Entity("ProfileCore.Models.website.Course", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.PrimitiveCollection<string>("Technologies")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Url")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Courses");
+                });
+
+            modelBuilder.Entity("ProfileCore.Models.website.EducationProgram", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -63,7 +89,7 @@ namespace ProfileCore.Migrations
                     b.ToTable("Education");
                 });
 
-            modelBuilder.Entity("ProfileCore.Models.Job", b =>
+            modelBuilder.Entity("ProfileCore.Models.website.Job", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -75,7 +101,6 @@ namespace ProfileCore.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("DateEnded")
-                        .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("TEXT");
 
@@ -97,7 +122,7 @@ namespace ProfileCore.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("TEXT");
 
-                    b.PrimitiveCollection<string>("Technologies")
+                    b.Property<string>("Technologies")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
@@ -106,7 +131,7 @@ namespace ProfileCore.Migrations
                     b.ToTable("Jobs");
                 });
 
-            modelBuilder.Entity("ProfileCore.Models.Profile", b =>
+            modelBuilder.Entity("ProfileCore.Models.website.Profile", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -145,7 +170,7 @@ namespace ProfileCore.Migrations
                     b.ToTable("Profile");
                 });
 
-            modelBuilder.Entity("ProfileCore.Models.Project", b =>
+            modelBuilder.Entity("ProfileCore.Models.website.Project", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -185,7 +210,7 @@ namespace ProfileCore.Migrations
                     b.ToTable("Projects");
                 });
 
-            modelBuilder.Entity("ProfileCore.Models.SocialLink", b =>
+            modelBuilder.Entity("ProfileCore.Models.website.SocialLink", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -211,14 +236,14 @@ namespace ProfileCore.Migrations
                     b.ToTable("SocialLink");
                 });
 
-            modelBuilder.Entity("ProfileCore.Models.SocialLink", b =>
+            modelBuilder.Entity("ProfileCore.Models.website.SocialLink", b =>
                 {
-                    b.HasOne("ProfileCore.Models.Profile", null)
+                    b.HasOne("ProfileCore.Models.website.Profile", null)
                         .WithMany("SocialLinks")
                         .HasForeignKey("ProfileId");
                 });
 
-            modelBuilder.Entity("ProfileCore.Models.Profile", b =>
+            modelBuilder.Entity("ProfileCore.Models.website.Profile", b =>
                 {
                     b.Navigation("SocialLinks");
                 });

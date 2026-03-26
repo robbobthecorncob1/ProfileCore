@@ -1,6 +1,6 @@
 using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
-using ProfileCore.Models;
+using ProfileCore.Models.website;
 
 namespace ProfileCore.Data;
 
@@ -30,6 +30,11 @@ public class WebsiteDbContext(DbContextOptions<WebsiteDbContext> options) : DbCo
     /// Gets or sets the database table containing the user's academic history, degrees, and certifications.
     /// </summary>
     public DbSet<EducationProgram> Education { get; set; }
+
+    /// <summary>
+    /// Gets or sets the database table containing the user's academic courses.
+    /// </summary>
+    public DbSet<Course> Courses {get; set; }
 
     /// <summary>
     /// Configures the database schema and entity mappings for the application.

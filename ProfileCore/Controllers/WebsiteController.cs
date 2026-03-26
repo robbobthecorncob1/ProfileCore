@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using ProfileCore.Models;
+using ProfileCore.Models.website;
 using ProfileCore.Services;
 
 namespace ProfileCore.Controllers;
@@ -77,6 +77,17 @@ public class WebsiteController(IWebsiteService websiteService) : ControllerBase
     /// <response code="200">Returns the current system health metrics.</response>
     [HttpGet("status")]
     public async Task<ActionResult<SystemStatus>> GetSystemStatus()
+    {
+        return Ok(await _websiteService.GetSystemStatusAsync());
+    }
+
+    /// <summary>
+    /// Retrieves the user's course history.
+    /// </summary>
+    /// <returns>A list of courses</returns>
+    /// <response code="200">Returns the requested course data.</response>
+    [HttpGet("courses")]
+    public async Task<ActionResult<List<Course>>> GetCourses()
     {
         return Ok(await _websiteService.GetSystemStatusAsync());
     }
