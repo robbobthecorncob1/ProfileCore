@@ -2,7 +2,7 @@ using System.Diagnostics;
 using System.Reflection;
 using Microsoft.EntityFrameworkCore;
 using ProfileCore.Data;
-using ProfileCore.Models;
+using ProfileCore.Models.website;
 
 namespace ProfileCore.Services;
 
@@ -115,5 +115,11 @@ public class WebsiteService(WebsiteDbContext context, ILogger<WebsiteService> lo
             submission.Name, submission.Email, submission.Subject, submission.Message
         );
         await Task.CompletedTask;
+    }
+
+    /// <inheritdoc />
+    public async Task<List<Course>> GetCoursesAsync()
+    {
+        return await _context.Courses.ToListAsync();
     }
 }

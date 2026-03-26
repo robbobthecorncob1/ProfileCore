@@ -1,4 +1,4 @@
-using ProfileCore.Models;
+using ProfileCore.Models.website;
 
 namespace ProfileCore.Services;
 
@@ -50,4 +50,10 @@ public interface IWebsiteService
     /// <param name="submission">The payload containing the sender's details and message.</param>
     /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
     Task ProcessContactSubmissionAsync(ContactSubmission submission);
+
+    /// <summary>
+    /// Asynchronously Retrieves the user's complete list of courses.
+    /// </summary>
+    /// <returns>A task representing the asynchronous operation. The task result contains a list of <see cref="Course"/> records.</returns>
+    Task<List<Course>> GetCoursesAsync();
 }
