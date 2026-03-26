@@ -89,7 +89,7 @@ public class WebsiteController(IWebsiteService websiteService) : ControllerBase
     [HttpGet("courses")]
     public async Task<ActionResult<List<Course>>> GetCourses()
     {
-        return Ok(await _websiteService.GetSystemStatusAsync());
+        return Ok(await _websiteService.GetCoursesAsync());
     }
 
 }
