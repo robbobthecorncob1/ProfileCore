@@ -219,8 +219,8 @@ public record SystemStatus (
 /// <param name="Technologies">A list of specific technologies used in the course.</param>
 public record Course (
     int Id,
-    string Name, 
-    string Description,
-    string? Url, 
+    [property: Required, MaxLength(100)] string Name, 
+    [property: Required, MaxLength(20000)] string Description,
+    [property: MaxLength(100)] string? Url, 
     List<string> Technologies
 );
