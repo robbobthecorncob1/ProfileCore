@@ -9,7 +9,13 @@ Thumbs.db
 
 TestResults/
 
-appsettings.json
 appsettings.Development.json
 *.secret.json
-ProfileCore/appsettings.json
+
+# SQLite Temp Files
+*.db-shm
+*.db-wal
+
+# Env variables
+.env
+.env.*
