@@ -14,12 +14,11 @@ public class EmailService(IResend resend, IConfiguration config) : IEmailService
     /// <inheritdoc />
     public async Task SendContactEmailAsync(ContactSubmission submission)
     {
-        var toEmail = _config["Resend:ToEmail"]!;
-
-        var message = new EmailMessage
+        Console.WriteLine("[Resend] Bypassing ISP firewalls. Sending via HTTP API...");
+        await _resend.EmailSendAsync(new EmailMessage
         {
-            From = "onboarding@resend.dev", 
-            To = { toEmail },
+            From = _config["Resend:FromEmail"]!, 
+            To = { _config["Resend:ToEmail"]! },
             Subject = $"Portfolio Contact: {submission.Subject}",
             HtmlBody = $@"
                 <h3>New message from your portfolio website!</h3>
@@ -27,10 +26,7 @@ public class EmailService(IResend resend, IConfiguration config) : IEmailService
                 <p><strong>Email:</strong> {submission.Email}</p>
                 <hr />
                 <p>{submission.Message.Replace("\n", "<br/>")}</p>"
-        };
-
-        Console.WriteLine("[Resend] Bypassing ISP firewalls. Sending via HTTP API...");
-        await _resend.EmailSendAsync(message);
+        });
         Console.WriteLine("[Resend] Message sent successfully!");
     }
 }
