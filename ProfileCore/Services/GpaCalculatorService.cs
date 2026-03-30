@@ -9,13 +9,19 @@ public class GpaCalculatorService : IGpaCalculatorService
     public GpaCalculationResponse CalculateGpa(GpaCalculationRequest request)
     {
         double CalculatedGpa = 0;
-        double TotalCreditHours = 0;
+        double PastCreditHours = 0;
+
+        if (request.CurrentGpa.HasValue && request.PastCreditHours.HasValue && request.PastCreditHours.Value > 0) { 
+            PastCreditHours = request.PastCreditHours.Value;
+            CalculatedGpa = request.CurrentGpa.Value;
+        }
+
+        double TotalCreditHours = PastCreditHours;
         string Message = "Please add at least one course with more than 0 credit hours.";
 
         if (request.Courses.Count > 0)
         {
             double totalGradePoints = 0;
-            TotalCreditHours = 0;
 
             foreach (var course in request.Courses)
             {
@@ -25,29 +31,13 @@ public class GpaCalculatorService : IGpaCalculatorService
 
             if (TotalCreditHours > 0)
             {
-                if (request.CurrentGpa.HasValue && request.PastCreditHours.HasValue)
-                {
-                    totalGradePoints += request.CurrentGpa.Value * request.PastCreditHours.Value;
-                    TotalCreditHours += request.PastCreditHours.Value;
-                }
+                totalGradePoints += CalculatedGpa * PastCreditHours;
 
                 CalculatedGpa = Math.Round(totalGradePoints / TotalCreditHours, 2);
                 
                 Message = "GPA successfully calculated!";
             }
-            else if (request.CurrentGpa.HasValue)
-            {
-                CalculatedGpa = request.CurrentGpa.Value;
-            }
         } 
-        else if (request.CurrentGpa.HasValue)
-        {
-            CalculatedGpa = request.CurrentGpa.Value;
-            if (request.PastCreditHours.HasValue){
-                TotalCreditHours = request.PastCreditHours.Value;
-            }
-        }
-        
         return  new GpaCalculationResponse(CalculatedGpa, Message, TotalCreditHours);
     }
 
@@ -64,9 +54,10 @@ public class GpaCalculatorService : IGpaCalculatorService
             message = $"You will need a minimum {requiredGpa} GPA in your {request.NewCreditHours} credit hours.\n";
             message += requiredGpa switch
             {
-                > 4.0 => "Try adding more classes!",
+                > 4.0 => "It is currently not possible. Try adding more classes!",
                 >= 3.5 => "You will need mostly A's to pull this off.",
                 >= 2.0 => "You will need a solid mix of A's, B's, and maybe some C's.",
+                <= 0 => "You could fail every class and still hit your goal!",
                 _ => "You have plenty of breathing room to hit this target."
             };
 
