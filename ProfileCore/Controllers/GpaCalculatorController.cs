@@ -26,9 +26,7 @@ public class GpaController(IGpaCalculatorService gpaService) : ControllerBase
     [HttpPost("calculate-gpa")]
     public ActionResult<GpaCalculationResponse> CalculateGpa([FromBody] GpaCalculationRequest request)
     {
-        GpaCalculationResponse response = _gpaService.CalculateGpa(request);
-
-        return Ok(response);
+        return Ok(_gpaService.CalculateGpa(request));
     }
 
     /// <summary>
@@ -41,8 +39,6 @@ public class GpaController(IGpaCalculatorService gpaService) : ControllerBase
     [HttpPost("calculate-target")]
     public ActionResult<TargetGpaResponse> CalculateTargetGpa([FromBody] TargetGpaRequest request)
     {
-        TargetGpaResponse response = _gpaService.CalculateTargetGpa(request);
-
-        return Ok(response);
+        return Ok(_gpaService.CalculateTargetGpa(request));
     }
 }
