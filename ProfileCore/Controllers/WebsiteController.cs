@@ -11,9 +11,10 @@ namespace ProfileCore.Controllers;
 /// <param name="websiteService">The injected business logic service that processes portfolio data.</param>
 [ApiController]
 [Route("api/[controller]")]
-public class WebsiteController(IWebsiteService websiteService) : ControllerBase
+public class WebsiteController(IWebsiteService websiteService, IEmailService emailService) : ControllerBase
 {
     private readonly IWebsiteService _websiteService = websiteService;
+    private readonly IEmailService _emailService = emailService;
 
     /// <summary>
     /// Retrieves the user's primary profile information, biography, and skills.
@@ -92,4 +93,37 @@ public class WebsiteController(IWebsiteService websiteService) : ControllerBase
         return Ok(await _websiteService.GetCoursesAsync());
     }
 
+    /// <summary>
+    /// Handles the HTTP POST request for contact form submissions.
+    /// Performs basic validation and coordinates with the <see cref="IEmailService"/> for delivery.
+    /// </summary>
+    /// <param name="submission">The data transfer object containing the user's message and contact info.</param>
+    /// <returns>An <see cref="IResult"/> representing an HTTP 200 (OK), 400 (Bad Request), or 500 (Internal Server Error).</returns>
+    [HttpPost("contact")]
+    public async Task<IActionResult> HandleContactSubmission([FromBody] ContactSubmission submission)
+    {
+        Console.WriteLine($"\n--- NEW CONTACT REQUEST RECEIVED ---");
+        Console.WriteLine($"From: {submission.Email}");
+        
+        try
+        {
+            if (string.IsNullOrWhiteSpace(submission.Email) || string.IsNullOrWhiteSpace(submission.Message)) 
+            {
+                Console.WriteLine("Validation failed: Missing Email or Message.");
+                return BadRequest("Email and Message are required.");
+            }
+
+            Console.WriteLine("Validation passed. Handing off to EmailService...");
+            
+            await _emailService.SendContactEmailAsync(submission);
+            
+            Console.WriteLine("EmailService finished successfully!");
+            return Ok(new { message = "Email sent successfully!" });
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"CRITICAL EMAIL ERROR: {ex.Message}");
+            return StatusCode(500, "An error occurred while sending the email.");
+        }
+    }
 }
