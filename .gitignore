@@ -19,3 +19,6 @@ appsettings.Development.json
 # Env variables
 .env
 .env.*
+
+deploy/
+deploy/*
