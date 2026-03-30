@@ -9,13 +9,11 @@ namespace ProfileCore.Services;
 /// <inheritdoc />
 /// <param name="context">The database context for website data.</param>
 /// <param name="logger">The logger for service-level events.</param>
-public class WebsiteService(WebsiteDbContext context, ILogger<WebsiteService> logger, IHostEnvironment env, WebsiteDbContext dbContext) : IWebsiteService
+public class WebsiteService(WebsiteDbContext context, ILogger<WebsiteService> logger, IHostEnvironment env) : IWebsiteService
 {
     private readonly WebsiteDbContext _context = context;
     private readonly ILogger<WebsiteService> _logger = logger;
     private readonly IHostEnvironment _env = env;
-    private readonly WebsiteDbContext _dbContext = dbContext;
-    private static readonly DateTime _serverStartTime = DateTime.UtcNow;
     
     /// <inheritdoc />
     public async Task<Profile> GetProfileAsync()
@@ -102,7 +100,7 @@ public class WebsiteService(WebsiteDbContext context, ILogger<WebsiteService> lo
         string dbStatus = "Offline";
         try 
         {
-            bool isDbOnline = await _dbContext.Database.CanConnectAsync();
+            bool isDbOnline = await _context.Database.CanConnectAsync();
             if (isDbOnline) dbStatus = "Operational";
         }
         catch (Exception ex)
