@@ -77,7 +77,7 @@ GET  /api/website/projects - Fetches the complete list of projects.
 GET  /api/website/skills - Fetches the complete list of technical skills.  
 GET  /api/website/education - Fetches the complete education history.  
 GET  /api/website/status - Retrieves the current operational status of the API  
-GET  /api/website/courses - Fetches the complete list of notable courses
+GET  /api/website/courses - Fetches the complete list of notable courses  
 POST /api/website/contact - Processes and sends a message using an email forwarding service.
 
 ### GPA Calculator
