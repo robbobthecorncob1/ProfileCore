@@ -2,7 +2,7 @@
 
 <https://api.adamhilty.com>
 
-A backend web API built with .NET and C#. Supports a [GPA Calculator](https://github.com/robbobthecorncob1/GpaCalculator) web application and my [personal website](https://adamhilty.com).
+A backend web API built with .NET and C#. Supports a [GPA Calculator](https://github.com/robbobthecorncob1/GpaCalculator) web application and my [personal website](https://github.com/robbobthecorncob1/WebsiteFrontend).
 
 ## About
 
